@@ -26,10 +26,10 @@ When creating a new chapter, the following should be present in the new director
  * build_unit.bat file
 
 When creating new chapters, the following items must be followed due to the flat heirarchical nature of the R Markdown Website output:
- * .rmd documents must have unique names across the full project 
-   *(e.g. \L1\source\test.rmd and \L2\source\test.rmd would create a conflict in the generated website even though individual units would build fine)
- * any datasets must have unique names across the full project 
-   *(e.g. \L1\data\swiss.dat and \L2\data\swiss.dat would create a conflict in the generated website even though individual units would build fine)
+ * .rmd documents must have unique names across the full project  
+   * (e.g. \L1\source\test.rmd and \L2\source\test.rmd would create a conflict in the generated website even though individual units would build fine)
+ * any datasets must have unique names across the full project  
+   * (e.g. \L1\data\swiss.dat and \L2\data\swiss.dat would create a conflict in the generated website even though individual units would build fine)
 
 Note that the formate of the generated website is not tied to the structure of the chapters.  
 Instead, the output website format is defined in
