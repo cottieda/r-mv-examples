@@ -1,9 +1,13 @@
 # r-mv-examples
 Examples of multivariate statistical analysis using R for STAT505 
-  
+
+See [Penn State STAT505](https://newonlinecourses.science.psu.edu/stat505_sp19/lesson/0)
+
+## Website Navigation
+
 The code snippets are compiled into an R markdown website.  
 
-This can be previewed online here:  
+This can be previewed online here (note: very slow rendering):  
 [Rendered Markdown Site](http://htmlpreview.github.io/?https://github.com/cottieda/r-mv-examples/blob/master/_web/_site/index.html)
 
 To view the site in the local repo, navigate to: 
@@ -16,6 +20,9 @@ To rebuild the site locally, run:
 \r-mv-examples\_script\build_all.bat
 ```
 
+## Editing/Adding Content
+Contributors: Do not push code snippets, datasets, or other files related to the HW or exams.  
+  
 Before re-building the whole site, it is advisable to test-build any edited chapters by first running build_unit.bat.  
 e.g. to rebuild \L1 chapter you'd run:  
 ```
