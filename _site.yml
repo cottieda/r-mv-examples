@@ -1,0 +1,31 @@
+name: "r-mv-examples-stat505"
+navbar:
+  title: "STAT505 - R Examples"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Matrix / LA"
+      menu:
+        - text: "Basic Matrix Operations"
+          href: matrix.html
+        - text: "Linear Algebra Manipulations"
+          href: la.html
+    - text: "Multivariate Distributions (L0 - L6)"
+      menu:
+        - text: "EDA"
+        - text: "Transforms for Normality"
+          href: univariate.html
+        - text: "Transform Pairs for Normality"
+          href: bivariate.html
+    - text: "Multivariate Inference (L7 - L10)"
+      menu:
+        - text: "Bartlett's"
+          href: bartletts.html
+        - text: "Manova1"
+          href: manova.html
+        - text: "Manova2"
+          href: manova2.html
+        - text: "Split-Plot ANOVA"
+          href: split-plot.html
+    - text: "About"
+      href: about.html

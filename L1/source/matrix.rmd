@@ -1,0 +1,57 @@
+---
+title: "Basic Matrix Operations"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+
+#Declare Matrix
+
+Entires should be one list, going down the columns
+```{r, declare1}
+#declare input A
+A = matrix(c(3, 1, -1, 5, 2, 4), nrow = 2)
+A
+
+#declare input B
+B = matrix(c(-2, 7, 9), nrow = 3)
+B
+
+#declare input C
+C = matrix(c(2, 1, 0, -1), nrow = 2)
+C
+
+#create 3x3 identity matrix
+I = diag(3)
+I
+
+#name rows or cols
+colnames(C) = c("foo", "bar")
+rownames(C) = c("baz", "qux")
+C
+```
+
+#Basic manipulations
+
+```{r, manip}
+#transpose
+A
+t(A)
+#dimension
+dim(A)
+dim(B)
+```
+
+#Multiplication
+
+Need to use %\*% and not \*
+
+```{r, mult}
+#do multiplication
+Z = A %*% B
+Z
+```

@@ -1,0 +1,33 @@
+---
+title: "Basic Linear Algebra"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+
+#Declare Matrix
+
+```{r, declare1}
+#declare input A
+A = matrix(c(13, -4, 2, -4, 13, -2, 2, -2, 10), nrow = 3)
+A
+```
+
+#Spectral Decomposition
+
+```{r, decomp}
+#Get eigenvalues and eigenvectors
+e = eigen(A)
+e
+
+#Re-constitute the matrix
+A2 = 
+e$values[1]*(e$vectors[,1] %*% t(e$vectors[,1])) +
+e$values[2]*(e$vectors[,2] %*% t(e$vectors[,2])) +
+e$values[3]*(e$vectors[,3] %*% t(e$vectors[,3])) 
+A2
+```

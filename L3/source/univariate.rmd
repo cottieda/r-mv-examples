@@ -1,0 +1,94 @@
+---
+title: "Univariate Exploratory Data Analysis"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+
+Exploration of the calcium variable and potential transforms to acheive normality in the nutrient dataset. 
+
+# Read input data
+
+```{r, read1}
+#read input file
+n = read.table(
+	file = "../data/nutrient.txt",
+	col.names = c("id","calcium","iron","protein","a","c"))
+#print input data
+n
+```
+# Explore calcium variable
+```{r, exp1}
+#define plotting function
+norm_plot = function(df, col){
+	#histogram
+	hist(df[,col], 
+		main = paste("Histogram of ", col),
+		xlab = col)
+	#qq plot
+	qqnorm(df[,col])
+	#reference line added to qq plot
+	qqline(df[,col])
+	#test statistic added to qq plot
+	test = shapiro.test(df[,col])
+	legend("topleft", legend = paste0(
+		test$method,"\n",
+		"p = ", format.pval(test$p.value)))
+}
+
+#setup graphical parameters - plot as 1 x 2 array
+g = par(mfrow=c(1,2), cex = 0.75)
+#plot histogram and q-q plot of calcium
+norm_plot(n, "calcium")
+#restore graphical parameters
+par(g)
+```
+
+
+# Generate potential transforms
+```{r, trans1}
+#square root transform
+n$calcium_rt2 = sqrt(n$calcium)
+#4th root transform
+n$calcium_rt4 = n$calcium^(1/4)
+#natural log transform
+n$calcium_ln = log(n$calcium)
+#print transformed data
+n[,c("calcium","calcium_rt2","calcium_rt4","calcium_ln")]
+```
+
+
+# Evaluate transforms
+```{r, eval1, fig.width=8.5, fig.height=11}
+#setup graphical parameters - plot as 4 x 2 array
+g = par(mfrow=c(4,2))
+#make plots for each variable of interest...
+for(col in c("calcium","calcium_rt2","calcium_rt4","calcium_ln")){
+	#histogram
+	hist(n[,col], main = paste("Histogram of ", col))
+	#qq plot
+	qqnorm(n[,col])
+	#reference line added to qq plot
+	qqline(n[,col])
+	#test statistic added to qq plot
+	test = shapiro.test(n[,col])
+	legend("topleft", legend = paste0(
+		test$method,"\n",
+		"p = ", format.pval(test$p.value)))
+}
+#restore graphical parameters
+par(g)
+```
+
+# Select variables
+```{r, select1}
+#drop two unsuccessful transforms
+n = subset(n, select = -c(calcium_rt2,calcium_ln))
+#print data
+n
+```
+

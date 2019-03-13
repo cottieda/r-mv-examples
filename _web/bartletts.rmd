@@ -1,0 +1,64 @@
+---
+title: "Bartletts"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+
+#Libraries
+```{r, lib1}
+library("dplyr")
+```
+
+#Read data
+```{r, read1}
+#read swiss3.txt dataset
+swiss = read.table("../data/swiss3.txt", sep = " ",
+	col.names = c("type", "length", "left.width", "right.wdith", "bottom.mar", "top.mar", "diagonal"))
+swiss
+```
+
+#split and pool variances
+```{r} 
+#extract var-cov matrices
+s.real = swiss[swiss$type == "real", !(names(swiss) %in% c("type"))] %>% var
+s.fake = swiss[swiss$type == "fake",   !(names(swiss) %in% c("type"))] %>% var
+#extract lengths of each treatment
+n.real = swiss[swiss$type == "real",] %>% nrow()
+n.real
+n.fake = swiss[swiss$type == "fake",]   %>% nrow()
+n.fake
+#determine number of vars
+swiss.p = length(which(!(names(swiss) %in% c("type"))))
+swiss.p
+#compute pooled var-cov
+s.p =  ((n.real - 1)*s.real + (n.fake - 1)*s.fake)/
+(n.real + n.fake - 2)
+#display var-covs
+s.real
+s.fake
+s.p
+```
+
+#Bartlett's test
+```{r}
+#compute finite population correction
+c = 1 - ((2*swiss.p*swiss.p + 3*swiss.p - 1)/(6*swiss.p + 6))*
+    ((1/(n.real - 1)) + (1/(n.fake - 1)) - (1/(n.real + n.fake - 2)))
+c
+#compute l-prime
+l.prime = (n.real + n.fake - 2)*log(det(s.p)) - (n.real - 1)*log(det(s.real)) - (n.fake - 1)*log(det(s.fake))
+l.prime = c*l.prime
+l.prime
+#compute df
+l.df = swiss.p*(swiss.p + 1)/2
+l.df
+#compute Chi.squared p value
+p = pchisq(l.prime, l.df, lower.tail = FALSE)
+p
+```
+

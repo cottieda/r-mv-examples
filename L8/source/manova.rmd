@@ -1,0 +1,36 @@
+---
+title: "Manova"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+
+Test Manova on Pottery Data
+
+#libraries
+```{r, imports1}
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+```
+
+# Read data
+```{r, read1}
+#read the input data
+pottery = read.table("../data/pottery.txt", sep = " ",
+	col.names = c("site", "al", "fe", "mg", "ca", "na"),
+	stringsAsFactors = TRUE)
+pottery
+```
+
+#Compute Manova
+```{r, manova1, }
+resp = cbind(pottery$al, pottery$fe, pottery$mg, pottery$ca, pottery$na)
+pottery.man = manova(
+	resp ~ site, data = pottery)
+summary(pottery.man, test='Wilks')
+```

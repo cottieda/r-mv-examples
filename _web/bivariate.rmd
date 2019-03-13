@@ -1,0 +1,174 @@
+---
+title: "Bivariate Exploratory Data Analysis"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+
+Exploration of the calcium (and transforms) vs iron (and transforms) relationship in the nutrient
+dataset. 
+
+```{r, import1}
+#libraries
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(tidyr)
+```
+
+#Read input data
+```{r, read1}
+#read input data
+n = read.table(
+	file = "../data/nutrient.txt",
+	col.names = c("id","calcium","iron","protein","a","c"))
+#print input data
+n
+```
+
+#Explore calcium vs iron relationship
+```{r, exp1, fig.width=8.5, fig.height=8.5}
+#setup graphical parameters - plot as 2 x 2 array
+g = par(mfrow=c(2,2), cex = 0.75)
+
+#scatterplot of two variables
+	plot(calcium ~ iron, data = n,
+		main = "Linear fit of Calcium vs Iron")
+	#generate model of calcium vs iron
+	model = lm(calcium ~ iron, data = n)
+	#show linear fit
+	abline(model)
+	#print R-squared
+	legend("topleft", legend = paste0(
+		"R-squared = ", 
+		round(summary(model)$r.squared,3)))
+
+#scatterplot of residuals vs fits
+	plot(model$fitted.values, model$residuals,
+		main = "Residuals vs Fits")
+	abline(h = 0)
+
+#histogram of residuals
+	hist(model$residuals,
+		main = "Histogram of Residuals")
+		
+#q-q plot of residuals
+	qqnorm(model$residuals,
+		main = "Normal Q-Q Plot of Residuals")
+	#reference line added to qq plot
+	qqline(model$residuals)
+	#test statistic added to qq plot
+	test = shapiro.test(model$residuals)
+	legend("topleft", legend = paste0(
+		test$method,"\n",
+		"p = ", format.pval(test$p.value)))
+
+#restore graphical parameters
+par(g)
+```
+
+#Generate potential transforms
+```{r, gen1}
+#square root transform
+n$calcium_rt2 = n$calcium^(1/2)
+n$iron_rt2 = n$iron^(1/2)
+#4th root transform
+n$calcium_rt4 = n$calcium^(1/4)
+n$iron_rt4 = n$iron^(1/4)
+#natural log transform
+n$calcium_ln = log(n$calcium)
+n$iron_ln = log(n$iron)
+#define transform lists
+iron_transforms = c("iron","iron_rt2","iron_rt4","iron_ln")
+calcium_transforms = c("calcium","calcium_rt2","calcium_rt4","calcium_ln")
+#print transformed data
+n[,c(calcium_transforms, iron_transforms)]
+```
+
+#Evaluate transforms
+```{r, eval1, fig.width=8.5,fig.height=8.5}
+#reform data to a tall-skinny dataframe with every combination of predictor and response transform
+pred = melt(
+	n[,iron_transforms],
+	variable.name = "iron_transform",
+	value.name = "predictor")
+resp = melt(
+	n[,calcium_transforms],
+	variable.name = "calcium_transform",
+	value.name = "response")
+pred = bind_rows(replicate(length(calcium_transforms), pred, simplify = FALSE))
+resp = bind_rows(replicate(length(iron_transforms), resp, simplify = FALSE))
+pred = arrange(pred, iron_transform)
+pairs = cbind(pred, resp)
+
+#remove infinite values from log transform
+pairs = pairs[is.finite(pairs$predictor),]
+pairs = pairs[is.finite(pairs$response),]
+
+#generate residuals and fits
+a = pairs %>%
+	group_by(iron_transform, calcium_transform) %>%
+	do(residuals = rstudent(lm(response ~ predictor, data = .)))
+	pairs$residual.std = unlist(a$residuals)
+#a = pairs %>%
+#	group_by(iron_transform, calcium_transform) %>%
+#	do(fitted.values = lm(response ~ predictor, data = .)$fitted.values)
+#	pairs$fitted.value = unlist(a$fitted.values)
+
+rsq = pairs %>%
+	group_by(iron_transform, calcium_transform) %>%
+	summarize(
+		r.squared = paste("r.sq:",round(summary(lm(response ~ predictor, data = .))$r.squared,5)),
+		x = mean(predictor, data = .),
+		y = mean(response, data = .))
+```
+
+
+
+## Transformation Pairs {.tabset}
+
+### Scatterplots
+```{r, scatter1, collapse = TRUE}
+ggplot(pairs, aes(x=predictor, y=response)) + 
+	geom_point() +
+	geom_smooth(method = "lm", se = FALSE) +
+	geom_text(data = rsq, aes(x=x, y=y, label=r.squared), inherit.aes=FALSE, parse=FALSE, color = "red") +
+	facet_grid(calcium_transform ~ iron_transform, scales="free", switch="y") +
+	ggtitle("Scatterplot")
+```
+
+### Residual Histogram
+```{r, hist1, collapse = TRUE}
+ggplot(pairs, aes(x=residual.std)) + 
+	geom_histogram() +
+	facet_grid(calcium_transform ~ iron_transform, switch="y")+
+	ggtitle("Histogram of Standardized Residuals")
+```
+### Residuals
+```{r, resid1, collapse = TRUE}
+ggplot(pairs, aes(x=predictor, y=residual.std)) + 
+	geom_point() +
+	geom_hline(yintercept = 0) +
+	facet_grid(calcium_transform ~ iron_transform, scales="free_x", switch="y") +
+	ggtitle("Standardized Residuals vs Predictor")
+```
+
+### Residual Q-Q
+```{r, qq1, collapse = TRUE}
+ggplot(pairs, aes(sample=residual.std)) + 
+	geom_qq() +
+	geom_abline(intercept = 0, slope = 1) +
+	facet_grid(calcium_transform ~ iron_transform, switch="y")+
+	ggtitle("Q-Q Plot of Residuals")
+```
+	
+```{r, pairs}
+rsq = pairs %>%
+	group_by(iron_transform, calcium_transform) %>%
+	do(
+		r.squared = summary(lm(response ~ predictor, data = .)))
+```

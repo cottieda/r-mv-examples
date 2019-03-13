@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Bartletts</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STAT505 - R Examples</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Matrix / LA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="matrix.html">Basic Matrix Operations</a>
+    </li>
+    <li>
+      <a href="la.html">Linear Algebra Manipulations</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Multivariate Distributions (L0 - L6)
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">EDA</li>
+    <li>
+      <a href="univariate.html">Transforms for Normality</a>
+    </li>
+    <li>
+      <a href="bivariate.html">Transform Pairs for Normality</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Multivariate Inference (L7 - L10)
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="bartletts.html">Bartlett's</a>
+    </li>
+    <li>
+      <a href="manova.html">Manova1</a>
+    </li>
+    <li>
+      <a href="manova2.html">Manova2</a>
+    </li>
+    <li>
+      <a href="split-plot.html">Split-Plot ANOVA</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Bartletts</h1>
+
+</div>
+
+
+<div id="libraries" class="section level1">
+<h1>Libraries</h1>
+<pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+</div>
+<div id="read-data" class="section level1">
+<h1>Read data</h1>
+<pre class="r"><code>#read swiss3.txt dataset
+swiss = read.table(&quot;../data/swiss3.txt&quot;, sep = &quot; &quot;,
+    col.names = c(&quot;type&quot;, &quot;length&quot;, &quot;left.width&quot;, &quot;right.wdith&quot;, &quot;bottom.mar&quot;, &quot;top.mar&quot;, &quot;diagonal&quot;))
+swiss</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["type"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["length"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["left.width"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["right.wdith"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["bottom.mar"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["top.mar"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["diagonal"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"real","2":"214.8","3":"131.0","4":"131.1","5":"9.0","6":"9.7","7":"141.0"},{"1":"real","2":"214.6","3":"129.7","4":"129.7","5":"8.1","6":"9.5","7":"141.7"},{"1":"real","2":"214.8","3":"129.7","4":"129.7","5":"8.7","6":"9.6","7":"142.2"},{"1":"real","2":"214.8","3":"129.7","4":"129.6","5":"7.5","6":"10.4","7":"142.0"},{"1":"real","2":"215.0","3":"129.6","4":"129.7","5":"10.4","6":"7.7","7":"141.8"},{"1":"real","2":"215.7","3":"130.8","4":"130.5","5":"9.0","6":"10.1","7":"141.4"},{"1":"real","2":"215.5","3":"129.5","4":"129.7","5":"7.9","6":"9.6","7":"141.6"},{"1":"real","2":"214.5","3":"129.6","4":"129.2","5":"7.2","6":"10.7","7":"141.7"},{"1":"real","2":"214.9","3":"129.4","4":"129.7","5":"8.2","6":"11.0","7":"141.9"},{"1":"real","2":"215.2","3":"130.4","4":"130.3","5":"9.2","6":"10.0","7":"140.7"},{"1":"real","2":"215.3","3":"130.4","4":"130.3","5":"7.9","6":"11.7","7":"141.8"},{"1":"real","2":"215.1","3":"129.5","4":"129.6","5":"7.7","6":"10.5","7":"142.2"},{"1":"real","2":"215.2","3":"130.8","4":"129.6","5":"7.9","6":"10.8","7":"141.4"},{"1":"real","2":"214.7","3":"129.7","4":"129.7","5":"7.7","6":"10.9","7":"141.7"},{"1":"real","2":"215.1","3":"129.9","4":"129.7","5":"7.7","6":"10.8","7":"141.8"},{"1":"real","2":"214.5","3":"129.8","4":"129.8","5":"9.3","6":"8.5","7":"141.6"},{"1":"real","2":"214.6","3":"129.9","4":"130.1","5":"8.2","6":"9.8","7":"141.7"},{"1":"real","2":"215.0","3":"129.9","4":"129.7","5":"9.0","6":"9.0","7":"141.9"},{"1":"real","2":"215.2","3":"129.6","4":"129.6","5":"7.4","6":"11.5","7":"141.5"},{"1":"real","2":"214.7","3":"130.2","4":"129.9","5":"8.6","6":"10.0","7":"141.9"},{"1":"real","2":"215.0","3":"129.9","4":"129.3","5":"8.4","6":"10.0","7":"141.4"},{"1":"real","2":"215.6","3":"130.5","4":"130.0","5":"8.1","6":"10.3","7":"141.6"},{"1":"real","2":"215.3","3":"130.6","4":"130.0","5":"8.4","6":"10.8","7":"141.5"},{"1":"real","2":"215.7","3":"130.2","4":"130.0","5":"8.7","6":"10.0","7":"141.6"},{"1":"real","2":"215.1","3":"129.7","4":"129.9","5":"7.4","6":"10.8","7":"141.1"},{"1":"real","2":"215.3","3":"130.4","4":"130.4","5":"8.0","6":"11.0","7":"142.3"},{"1":"real","2":"215.5","3":"130.2","4":"130.1","5":"8.9","6":"9.8","7":"142.4"},{"1":"real","2":"215.1","3":"130.3","4":"130.3","5":"9.8","6":"9.5","7":"141.9"},{"1":"real","2":"215.1","3":"130.0","4":"130.0","5":"7.4","6":"10.5","7":"141.8"},{"1":"real","2":"214.8","3":"129.7","4":"129.3","5":"8.3","6":"9.0","7":"142.0"},{"1":"real","2":"215.2","3":"130.1","4":"129.8","5":"7.9","6":"10.7","7":"141.8"},{"1":"real","2":"214.8","3":"129.7","4":"129.7","5":"8.6","6":"9.1","7":"142.3"},{"1":"real","2":"215.0","3":"130.0","4":"129.6","5":"7.7","6":"10.5","7":"140.7"},{"1":"real","2":"215.6","3":"130.4","4":"130.1","5":"8.4","6":"10.3","7":"141.0"},{"1":"real","2":"215.9","3":"130.4","4":"130.0","5":"8.9","6":"10.6","7":"141.4"},{"1":"real","2":"214.6","3":"130.2","4":"130.2","5":"9.4","6":"9.7","7":"141.8"},{"1":"real","2":"215.5","3":"130.3","4":"130.0","5":"8.4","6":"9.7","7":"141.8"},{"1":"real","2":"215.3","3":"129.9","4":"129.4","5":"7.9","6":"10.0","7":"142.0"},{"1":"real","2":"215.3","3":"130.3","4":"130.1","5":"8.5","6":"9.3","7":"142.1"},{"1":"real","2":"213.9","3":"130.3","4":"129.0","5":"8.1","6":"9.7","7":"141.3"},{"1":"real","2":"214.4","3":"129.8","4":"129.2","5":"8.9","6":"9.4","7":"142.3"},{"1":"real","2":"214.8","3":"130.1","4":"129.6","5":"8.8","6":"9.9","7":"140.9"},{"1":"real","2":"214.9","3":"129.6","4":"129.4","5":"9.3","6":"9.0","7":"141.7"},{"1":"real","2":"214.9","3":"130.4","4":"129.7","5":"9.0","6":"9.8","7":"140.9"},{"1":"real","2":"214.8","3":"129.4","4":"129.1","5":"8.2","6":"10.2","7":"141.0"},{"1":"real","2":"214.3","3":"129.5","4":"129.4","5":"8.3","6":"10.2","7":"141.8"},{"1":"real","2":"214.8","3":"129.9","4":"129.7","5":"8.3","6":"10.2","7":"141.5"},{"1":"real","2":"214.8","3":"129.9","4":"129.7","5":"7.3","6":"10.9","7":"142.0"},{"1":"real","2":"214.6","3":"129.7","4":"129.8","5":"7.9","6":"10.3","7":"141.1"},{"1":"real","2":"214.5","3":"129.0","4":"129.6","5":"7.8","6":"9.8","7":"142.0"},{"1":"real","2":"214.6","3":"129.8","4":"129.4","5":"7.2","6":"10.0","7":"141.3"},{"1":"real","2":"215.3","3":"130.6","4":"130.0","5":"9.5","6":"9.7","7":"141.1"},{"1":"real","2":"214.5","3":"130.1","4":"130.0","5":"7.8","6":"10.9","7":"140.9"},{"1":"real","2":"215.4","3":"130.2","4":"130.2","5":"7.6","6":"10.9","7":"141.6"},{"1":"real","2":"214.5","3":"129.4","4":"129.5","5":"7.9","6":"10.0","7":"141.4"},{"1":"real","2":"215.2","3":"129.7","4":"129.4","5":"9.2","6":"9.4","7":"142.0"},{"1":"real","2":"215.7","3":"130.0","4":"129.4","5":"9.2","6":"10.4","7":"141.2"},{"1":"real","2":"215.0","3":"129.6","4":"129.4","5":"8.8","6":"9.0","7":"141.1"},{"1":"real","2":"215.1","3":"130.1","4":"129.9","5":"7.9","6":"11.0","7":"141.3"},{"1":"real","2":"215.1","3":"130.0","4":"129.8","5":"8.2","6":"10.3","7":"141.4"},{"1":"real","2":"215.1","3":"129.6","4":"129.3","5":"8.3","6":"9.9","7":"141.6"},{"1":"real","2":"215.3","3":"129.7","4":"129.4","5":"7.5","6":"10.5","7":"141.5"},{"1":"real","2":"215.4","3":"129.8","4":"129.4","5":"8.0","6":"10.6","7":"141.5"},{"1":"real","2":"214.5","3":"130.0","4":"129.5","5":"8.0","6":"10.8","7":"141.4"},{"1":"real","2":"215.0","3":"130.0","4":"129.8","5":"8.6","6":"10.6","7":"141.5"},{"1":"real","2":"215.2","3":"130.6","4":"130.0","5":"8.8","6":"10.6","7":"140.8"},{"1":"real","2":"214.6","3":"129.5","4":"129.2","5":"7.7","6":"10.3","7":"141.3"},{"1":"real","2":"214.8","3":"129.7","4":"129.3","5":"9.1","6":"9.5","7":"141.5"},{"1":"real","2":"215.1","3":"129.6","4":"129.8","5":"8.6","6":"9.8","7":"141.8"},{"1":"real","2":"214.9","3":"130.2","4":"130.2","5":"8.0","6":"11.2","7":"139.6"},{"1":"real","2":"213.8","3":"129.8","4":"129.5","5":"8.4","6":"11.1","7":"140.9"},{"1":"real","2":"215.2","3":"129.9","4":"129.5","5":"8.2","6":"10.3","7":"141.4"},{"1":"real","2":"215.0","3":"129.6","4":"130.2","5":"8.7","6":"10.0","7":"141.2"},{"1":"real","2":"214.4","3":"129.9","4":"129.6","5":"7.5","6":"10.5","7":"141.8"},{"1":"real","2":"215.2","3":"129.9","4":"129.7","5":"7.2","6":"10.6","7":"142.1"},{"1":"real","2":"214.1","3":"129.6","4":"129.3","5":"7.6","6":"10.7","7":"141.7"},{"1":"real","2":"214.9","3":"129.9","4":"130.1","5":"8.8","6":"10.0","7":"141.2"},{"1":"real","2":"214.6","3":"129.8","4":"129.4","5":"7.4","6":"10.6","7":"141.0"},{"1":"real","2":"215.2","3":"130.5","4":"129.8","5":"7.9","6":"10.9","7":"140.9"},{"1":"real","2":"214.6","3":"129.9","4":"129.4","5":"7.9","6":"10.0","7":"141.8"},{"1":"real","2":"215.1","3":"129.7","4":"129.7","5":"8.6","6":"10.3","7":"140.6"},{"1":"real","2":"214.9","3":"129.8","4":"129.6","5":"7.5","6":"10.3","7":"141.0"},{"1":"real","2":"215.2","3":"129.7","4":"129.1","5":"9.0","6":"9.7","7":"141.9"},{"1":"real","2":"215.2","3":"130.1","4":"129.9","5":"7.9","6":"10.8","7":"141.3"},{"1":"real","2":"215.4","3":"130.7","4":"130.2","5":"9.0","6":"11.1","7":"141.2"},{"1":"real","2":"215.1","3":"129.9","4":"129.6","5":"8.9","6":"10.2","7":"141.5"},{"1":"real","2":"215.2","3":"129.9","4":"129.7","5":"8.7","6":"9.5","7":"141.6"},{"1":"real","2":"215.0","3":"129.6","4":"129.2","5":"8.4","6":"10.2","7":"142.1"},{"1":"real","2":"214.9","3":"130.3","4":"129.9","5":"7.4","6":"11.2","7":"141.5"},{"1":"real","2":"215.0","3":"129.9","4":"129.7","5":"8.0","6":"10.5","7":"142.0"},{"1":"real","2":"214.7","3":"129.7","4":"129.3","5":"8.6","6":"9.6","7":"141.6"},{"1":"real","2":"215.4","3":"130.0","4":"129.9","5":"8.5","6":"9.7","7":"141.4"},{"1":"real","2":"214.9","3":"129.4","4":"129.5","5":"8.2","6":"9.9","7":"141.5"},{"1":"real","2":"214.5","3":"129.5","4":"129.3","5":"7.4","6":"10.7","7":"141.5"},{"1":"real","2":"214.7","3":"129.6","4":"129.5","5":"8.3","6":"10.0","7":"142.0"},{"1":"real","2":"215.6","3":"129.9","4":"129.9","5":"9.0","6":"9.5","7":"141.7"},{"1":"real","2":"215.0","3":"130.4","4":"130.3","5":"9.1","6":"10.2","7":"141.1"},{"1":"real","2":"214.4","3":"129.7","4":"129.5","5":"8.0","6":"10.3","7":"141.2"},{"1":"real","2":"215.1","3":"130.0","4":"129.8","5":"9.1","6":"10.2","7":"141.5"},{"1":"real","2":"214.7","3":"130.0","4":"129.4","5":"7.8","6":"10.0","7":"141.2"},{"1":"fake","2":"214.4","3":"130.1","4":"130.3","5":"9.7","6":"11.7","7":"139.8"},{"1":"fake","2":"214.9","3":"130.5","4":"130.2","5":"11.0","6":"11.5","7":"139.5"},{"1":"fake","2":"214.9","3":"130.3","4":"130.1","5":"8.7","6":"11.7","7":"140.2"},{"1":"fake","2":"215.0","3":"130.4","4":"130.6","5":"9.9","6":"10.9","7":"140.3"},{"1":"fake","2":"214.7","3":"130.2","4":"130.3","5":"11.8","6":"10.9","7":"139.7"},{"1":"fake","2":"215.0","3":"130.2","4":"130.2","5":"10.6","6":"10.7","7":"139.9"},{"1":"fake","2":"215.3","3":"130.3","4":"130.1","5":"9.3","6":"12.1","7":"140.2"},{"1":"fake","2":"214.8","3":"130.1","4":"130.4","5":"9.8","6":"11.5","7":"139.9"},{"1":"fake","2":"215.0","3":"130.2","4":"129.9","5":"10.0","6":"11.9","7":"139.4"},{"1":"fake","2":"215.2","3":"130.6","4":"130.8","5":"10.4","6":"11.2","7":"140.3"},{"1":"fake","2":"215.2","3":"130.4","4":"130.3","5":"8.0","6":"11.5","7":"139.2"},{"1":"fake","2":"215.1","3":"130.5","4":"130.3","5":"10.6","6":"11.5","7":"140.1"},{"1":"fake","2":"215.4","3":"130.7","4":"131.1","5":"9.7","6":"11.8","7":"140.6"},{"1":"fake","2":"214.9","3":"130.4","4":"129.9","5":"11.4","6":"11.0","7":"139.9"},{"1":"fake","2":"215.1","3":"130.3","4":"130.0","5":"10.6","6":"10.8","7":"139.7"},{"1":"fake","2":"215.5","3":"130.4","4":"130.0","5":"8.2","6":"11.2","7":"139.2"},{"1":"fake","2":"214.7","3":"130.6","4":"130.1","5":"11.8","6":"10.5","7":"139.8"},{"1":"fake","2":"214.7","3":"130.4","4":"130.1","5":"12.1","6":"10.4","7":"139.9"},{"1":"fake","2":"214.8","3":"130.5","4":"130.2","5":"11.0","6":"11.0","7":"140.0"},{"1":"fake","2":"214.4","3":"130.2","4":"129.9","5":"10.1","6":"12.0","7":"139.2"},{"1":"fake","2":"214.8","3":"130.3","4":"130.4","5":"10.1","6":"12.1","7":"139.6"},{"1":"fake","2":"215.1","3":"130.6","4":"130.3","5":"12.3","6":"10.2","7":"139.6"},{"1":"fake","2":"215.3","3":"130.8","4":"131.1","5":"11.6","6":"10.6","7":"140.2"},{"1":"fake","2":"215.1","3":"130.7","4":"130.4","5":"10.5","6":"11.2","7":"139.7"},{"1":"fake","2":"214.7","3":"130.5","4":"130.5","5":"9.9","6":"10.3","7":"140.1"},{"1":"fake","2":"214.9","3":"130.0","4":"130.3","5":"10.2","6":"11.4","7":"139.6"},{"1":"fake","2":"215.0","3":"130.4","4":"130.4","5":"9.4","6":"11.6","7":"140.2"},{"1":"fake","2":"215.5","3":"130.7","4":"130.3","5":"10.2","6":"11.8","7":"140.0"},{"1":"fake","2":"215.1","3":"130.2","4":"130.2","5":"10.1","6":"11.3","7":"140.3"},{"1":"fake","2":"214.5","3":"130.2","4":"130.6","5":"9.8","6":"12.1","7":"139.9"},{"1":"fake","2":"214.3","3":"130.2","4":"130.0","5":"10.7","6":"10.5","7":"139.8"},{"1":"fake","2":"214.5","3":"130.2","4":"129.8","5":"12.3","6":"11.2","7":"139.2"},{"1":"fake","2":"214.9","3":"130.5","4":"130.2","5":"10.6","6":"11.5","7":"139.9"},{"1":"fake","2":"214.6","3":"130.2","4":"130.4","5":"10.5","6":"11.8","7":"139.7"},{"1":"fake","2":"214.2","3":"130.0","4":"130.2","5":"11.0","6":"11.2","7":"139.5"},{"1":"fake","2":"214.8","3":"130.1","4":"130.1","5":"11.9","6":"11.1","7":"139.5"},{"1":"fake","2":"214.6","3":"129.8","4":"130.2","5":"10.7","6":"11.1","7":"139.4"},{"1":"fake","2":"214.9","3":"130.7","4":"130.3","5":"9.3","6":"11.2","7":"138.3"},{"1":"fake","2":"214.6","3":"130.4","4":"130.4","5":"11.3","6":"10.8","7":"139.8"},{"1":"fake","2":"214.5","3":"130.5","4":"130.2","5":"11.8","6":"10.2","7":"139.6"},{"1":"fake","2":"214.8","3":"130.2","4":"130.3","5":"10.0","6":"11.9","7":"139.3"},{"1":"fake","2":"214.7","3":"130.0","4":"129.4","5":"10.2","6":"11.0","7":"139.2"},{"1":"fake","2":"214.6","3":"130.2","4":"130.4","5":"11.2","6":"10.7","7":"139.9"},{"1":"fake","2":"215.0","3":"130.5","4":"130.4","5":"10.6","6":"11.1","7":"139.9"},{"1":"fake","2":"214.5","3":"129.8","4":"129.8","5":"11.4","6":"10.0","7":"139.3"},{"1":"fake","2":"214.9","3":"130.6","4":"130.4","5":"11.9","6":"10.5","7":"139.8"},{"1":"fake","2":"215.0","3":"130.5","4":"130.4","5":"11.4","6":"10.7","7":"139.9"},{"1":"fake","2":"215.3","3":"130.6","4":"130.3","5":"9.3","6":"11.3","7":"138.1"},{"1":"fake","2":"214.7","3":"130.2","4":"130.1","5":"10.7","6":"11.0","7":"139.4"},{"1":"fake","2":"214.9","3":"129.9","4":"130.0","5":"9.9","6":"12.3","7":"139.4"},{"1":"fake","2":"214.9","3":"130.3","4":"129.9","5":"11.9","6":"10.6","7":"139.8"},{"1":"fake","2":"214.6","3":"129.9","4":"129.7","5":"11.9","6":"10.1","7":"139.0"},{"1":"fake","2":"214.6","3":"129.7","4":"129.3","5":"10.4","6":"11.0","7":"139.3"},{"1":"fake","2":"214.5","3":"130.1","4":"130.1","5":"12.1","6":"10.3","7":"139.4"},{"1":"fake","2":"214.5","3":"130.3","4":"130.0","5":"11.0","6":"11.5","7":"139.5"},{"1":"fake","2":"215.1","3":"130.0","4":"130.3","5":"11.6","6":"10.5","7":"139.7"},{"1":"fake","2":"214.2","3":"129.7","4":"129.6","5":"10.3","6":"11.4","7":"139.5"},{"1":"fake","2":"214.4","3":"130.1","4":"130.0","5":"11.3","6":"10.7","7":"139.2"},{"1":"fake","2":"214.8","3":"130.4","4":"130.6","5":"12.5","6":"10.0","7":"139.3"},{"1":"fake","2":"214.6","3":"130.6","4":"130.1","5":"8.1","6":"12.1","7":"137.9"},{"1":"fake","2":"215.6","3":"130.1","4":"129.7","5":"7.4","6":"12.2","7":"138.4"},{"1":"fake","2":"214.9","3":"130.5","4":"130.1","5":"9.9","6":"10.2","7":"138.1"},{"1":"fake","2":"214.6","3":"130.1","4":"130.0","5":"11.5","6":"10.6","7":"139.5"},{"1":"fake","2":"214.7","3":"130.1","4":"130.2","5":"11.6","6":"10.9","7":"139.1"},{"1":"fake","2":"214.3","3":"130.3","4":"130.0","5":"11.4","6":"10.5","7":"139.8"},{"1":"fake","2":"215.1","3":"130.3","4":"130.6","5":"10.3","6":"12.0","7":"139.7"},{"1":"fake","2":"216.3","3":"130.7","4":"130.4","5":"10.0","6":"10.1","7":"138.8"},{"1":"fake","2":"215.6","3":"130.4","4":"130.1","5":"9.6","6":"11.2","7":"138.6"},{"1":"fake","2":"214.8","3":"129.9","4":"129.8","5":"9.6","6":"12.0","7":"139.6"},{"1":"fake","2":"214.9","3":"130.0","4":"129.9","5":"11.4","6":"10.9","7":"139.7"},{"1":"fake","2":"213.9","3":"130.7","4":"130.5","5":"8.7","6":"11.5","7":"137.8"},{"1":"fake","2":"214.2","3":"130.6","4":"130.4","5":"12.0","6":"10.2","7":"139.6"},{"1":"fake","2":"214.8","3":"130.5","4":"130.3","5":"11.8","6":"10.5","7":"139.4"},{"1":"fake","2":"214.8","3":"129.6","4":"130.0","5":"10.4","6":"11.6","7":"139.2"},{"1":"fake","2":"214.8","3":"130.1","4":"130.0","5":"11.4","6":"10.5","7":"139.6"},{"1":"fake","2":"214.9","3":"130.4","4":"130.2","5":"11.9","6":"10.7","7":"139.0"},{"1":"fake","2":"214.3","3":"130.1","4":"130.1","5":"11.6","6":"10.5","7":"139.7"},{"1":"fake","2":"214.5","3":"130.4","4":"130.0","5":"9.9","6":"12.0","7":"139.6"},{"1":"fake","2":"214.8","3":"130.5","4":"130.3","5":"10.2","6":"12.1","7":"139.1"},{"1":"fake","2":"214.5","3":"130.2","4":"130.4","5":"8.2","6":"11.8","7":"137.8"},{"1":"fake","2":"215.0","3":"130.4","4":"130.1","5":"11.4","6":"10.7","7":"139.1"},{"1":"fake","2":"214.8","3":"130.6","4":"130.6","5":"8.0","6":"11.4","7":"138.7"},{"1":"fake","2":"215.0","3":"130.5","4":"130.1","5":"11.0","6":"11.4","7":"139.3"},{"1":"fake","2":"214.6","3":"130.5","4":"130.4","5":"10.1","6":"11.4","7":"139.3"},{"1":"fake","2":"214.7","3":"130.2","4":"130.1","5":"10.7","6":"11.1","7":"139.5"},{"1":"fake","2":"214.7","3":"130.4","4":"130.0","5":"11.5","6":"10.7","7":"139.4"},{"1":"fake","2":"214.5","3":"130.4","4":"130.0","5":"8.0","6":"12.2","7":"138.5"},{"1":"fake","2":"214.8","3":"130.0","4":"129.7","5":"11.4","6":"10.6","7":"139.2"},{"1":"fake","2":"214.8","3":"129.9","4":"130.2","5":"9.6","6":"11.9","7":"139.4"},{"1":"fake","2":"214.6","3":"130.3","4":"130.2","5":"12.7","6":"9.1","7":"139.2"},{"1":"fake","2":"215.1","3":"130.2","4":"129.8","5":"10.2","6":"12.0","7":"139.4"},{"1":"fake","2":"215.4","3":"130.5","4":"130.6","5":"8.8","6":"11.0","7":"138.6"},{"1":"fake","2":"214.7","3":"130.3","4":"130.2","5":"10.8","6":"11.1","7":"139.2"},{"1":"fake","2":"215.0","3":"130.5","4":"130.3","5":"9.6","6":"11.0","7":"138.5"},{"1":"fake","2":"214.9","3":"130.3","4":"130.5","5":"11.6","6":"10.6","7":"139.8"},{"1":"fake","2":"215.0","3":"130.4","4":"130.3","5":"9.9","6":"12.1","7":"139.6"},{"1":"fake","2":"215.1","3":"130.3","4":"129.9","5":"10.3","6":"11.5","7":"139.7"},{"1":"fake","2":"214.8","3":"130.3","4":"130.4","5":"10.6","6":"11.1","7":"140.0"},{"1":"fake","2":"214.7","3":"130.7","4":"130.8","5":"11.2","6":"11.2","7":"139.4"},{"1":"fake","2":"214.3","3":"129.9","4":"129.9","5":"10.2","6":"11.5","7":"139.6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="split-and-pool-variances" class="section level1">
+<h1>split and pool variances</h1>
+<pre class="r"><code>#extract var-cov matrices
+s.real = swiss[swiss$type == &quot;real&quot;, !(names(swiss) %in% c(&quot;type&quot;))] %&gt;% var
+s.fake = swiss[swiss$type == &quot;fake&quot;,   !(names(swiss) %in% c(&quot;type&quot;))] %&gt;% var
+#extract lengths of each treatment
+n.real = swiss[swiss$type == &quot;real&quot;,] %&gt;% nrow()
+n.real</code></pre>
+<pre><code>## [1] 100</code></pre>
+<pre class="r"><code>n.fake = swiss[swiss$type == &quot;fake&quot;,]   %&gt;% nrow()
+n.fake</code></pre>
+<pre><code>## [1] 100</code></pre>
+<pre class="r"><code>#determine number of vars
+swiss.p = length(which(!(names(swiss) %in% c(&quot;type&quot;))))
+swiss.p</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>#compute pooled var-cov
+s.p =  ((n.real - 1)*s.real + (n.fake - 1)*s.fake)/
+(n.real + n.fake - 2)
+#display var-covs
+s.real</code></pre>
+<pre><code>##                  length  left.width right.wdith    bottom.mar     top.mar
+## length      0.150241414  0.05801313  0.05729293  0.0571262626  0.01445253
+## left.width  0.058013131  0.13257677  0.08589899  0.0566515152  0.04906667
+## right.wdith 0.057292929  0.08589899  0.12626263  0.0581818182  0.03064646
+## bottom.mar  0.057126263  0.05665152  0.05818182  0.4132070707 -0.26347475
+## top.mar     0.014452525  0.04906667  0.03064646 -0.2634747475  0.42118788
+## diagonal    0.005481818 -0.04306162 -0.02377778 -0.0001868687 -0.07530909
+##                  diagonal
+## length       0.0054818182
+## left.width  -0.0430616162
+## right.wdith -0.0237777778
+## bottom.mar  -0.0001868687
+## top.mar     -0.0753090909
+## diagonal     0.1998090909</code></pre>
+<pre class="r"><code>s.fake</code></pre>
+<pre><code>##                  length   left.width   right.wdith  bottom.mar
+## length       0.12401111  0.031515152  0.0240010101 -0.10059596
+## left.width   0.03151515  0.065050505  0.0467676768 -0.02404040
+## right.wdith  0.02400101  0.046767677  0.0889404040 -0.01857576
+## bottom.mar  -0.10059596 -0.024040404 -0.0185757576  1.28131313
+## top.mar      0.01943535 -0.011919192  0.0001323232 -0.49019192
+## diagonal     0.01156566 -0.005050505  0.0341919192  0.23848485
+##                   top.mar     diagonal
+## length       0.0194353535  0.011565657
+## left.width  -0.0119191919 -0.005050505
+## right.wdith  0.0001323232  0.034191919
+## bottom.mar  -0.4901919192  0.238484848
+## top.mar      0.4044555556 -0.022070707
+## diagonal    -0.0220707071  0.311212121</code></pre>
+<pre class="r"><code>s.p</code></pre>
+<pre><code>##                   length  left.width right.wdith  bottom.mar     top.mar
+## length       0.137126263  0.04476414 0.040646970 -0.02173485  0.01694394
+## left.width   0.044764141  0.09881364 0.066333333  0.01630556  0.01857374
+## right.wdith  0.040646970  0.06633333 0.107601515  0.01980303  0.01538939
+## bottom.mar  -0.021734848  0.01630556 0.019803030  0.84726010 -0.37683333
+## top.mar      0.016943939  0.01857374 0.015389394 -0.37683333  0.41282172
+## diagonal     0.008523737 -0.02405606 0.005207071  0.11914899 -0.04868990
+##                 diagonal
+## length       0.008523737
+## left.width  -0.024056061
+## right.wdith  0.005207071
+## bottom.mar   0.119148990
+## top.mar     -0.048689899
+## diagonal     0.255510606</code></pre>
+</div>
+<div id="bartletts-test" class="section level1">
+<h1>Bartlett’s test</h1>
+<pre class="r"><code>#compute finite population correction
+c = 1 - ((2*swiss.p*swiss.p + 3*swiss.p - 1)/(6*swiss.p + 6))*
+    ((1/(n.real - 1)) + (1/(n.fake - 1)) - (1/(n.real + n.fake - 2)))
+c</code></pre>
+<pre><code>## [1] 0.9678932</code></pre>
+<pre class="r"><code>#compute l-prime
+l.prime = (n.real + n.fake - 2)*log(det(s.p)) - (n.real - 1)*log(det(s.real)) - (n.fake - 1)*log(det(s.fake))
+l.prime = c*l.prime
+l.prime</code></pre>
+<pre><code>## [1] 121.8991</code></pre>
+<pre class="r"><code>#compute df
+l.df = swiss.p*(swiss.p + 1)/2
+l.df</code></pre>
+<pre><code>## [1] 21</code></pre>
+<pre class="r"><code>#compute Chi.squared p value
+p = pchisq(l.prime, l.df, lower.tail = FALSE)
+p</code></pre>
+<pre><code>## [1] 3.198345e-16</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

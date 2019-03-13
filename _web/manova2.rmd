@@ -1,0 +1,79 @@
+---
+title: "Manova Repeated Measures"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+
+Test Manova Repeated Measures on Dog Data
+
+#libraries
+```{r, imports1}
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(lme4)
+library(HoRM)
+```
+
+# Read data
+```{r}
+#read the input data
+dogs = read.table("../data/dog1.txt", sep = " ",
+	col.names = c("treat", "dog", "p1", "p5", "p9", "p13"),
+	stringsAsFactors = TRUE)
+#treatment and dog should be a factor
+dogs$treat = factor(paste0("treat",dogs$treat))
+dogs$dog = factor(paste0("d",dogs$dog))
+dogs
+```
+
+#basic manova
+```{r}
+resp = cbind(dogs$p1, dogs$p5, dogs$p9, dogs$p13)
+dogs.man = manova(
+	resp ~ treat, data = dogs)
+summary(dogs.man, test='Wilks')
+SSCP.fn(fits = dogs.man)
+```
+
+#interaction - dataset
+```{r}
+#define new dataset
+dogs2 = dogs
+dogs2$MVAR1 = dogs2$p5 - dogs2$p1
+dogs2$MVAR2 = dogs2$p9 - dogs2$p5
+dogs2$MVAR3 = dogs2$p13 - dogs2$p9
+#drop unused variables
+dogs2 = dogs2[,!(names(dogs2) %in% c("p1", "p5", "p9", "p13"))]
+dogs2
+```
+
+#interaction
+```{r}
+resp = cbind(dogs2$MVAR1, dogs2$MVAR2, dogs2$MVAR3)
+dogs2.man = manova(
+	resp ~ treat, data = dogs2)
+summary(dogs2.man, test='Wilks')
+```
+
+#Mains - dataset
+```{r}
+#define new dataset
+dogs3 = dogs
+dogs3$MVAR1 = dogs3$p1 + dogs3$p5 + dogs3$p9 + dogs3$p13
+#drop unused variables
+dogs3 = dogs3[,!(names(dogs3) %in% c("p1", "p5", "p9", "p13"))]
+dogs3
+```
+
+#Mains - test
+```{r}
+dogs3.aov = aov(
+	MVAR1 ~ treat, data = dogs3)
+summary(dogs3.aov)
+```

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Manova Repeated Measures</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STAT505 - R Examples</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Matrix / LA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="matrix.html">Basic Matrix Operations</a>
+    </li>
+    <li>
+      <a href="la.html">Linear Algebra Manipulations</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Multivariate Distributions (L0 - L6)
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">EDA</li>
+    <li>
+      <a href="univariate.html">Transforms for Normality</a>
+    </li>
+    <li>
+      <a href="bivariate.html">Transform Pairs for Normality</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Multivariate Inference (L7 - L10)
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="bartletts.html">Bartlett's</a>
+    </li>
+    <li>
+      <a href="manova.html">Manova1</a>
+    </li>
+    <li>
+      <a href="manova2.html">Manova2</a>
+    </li>
+    <li>
+      <a href="split-plot.html">Split-Plot ANOVA</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Manova Repeated Measures</h1>
+
+</div>
+
+
+<p>Test Manova Repeated Measures on Dog Data</p>
+<div id="libraries" class="section level1">
+<h1>libraries</h1>
+<pre class="r"><code>library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(lme4)</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     expand</code></pre>
+<pre class="r"><code>library(HoRM)</code></pre>
+</div>
+<div id="read-data" class="section level1">
+<h1>Read data</h1>
+<pre class="r"><code>#read the input data
+dogs = read.table(&quot;../data/dog1.txt&quot;, sep = &quot; &quot;,
+    col.names = c(&quot;treat&quot;, &quot;dog&quot;, &quot;p1&quot;, &quot;p5&quot;, &quot;p9&quot;, &quot;p13&quot;),
+    stringsAsFactors = TRUE)
+#treatment and dog should be a factor
+dogs$treat = factor(paste0(&quot;treat&quot;,dogs$treat))
+dogs$dog = factor(paste0(&quot;d&quot;,dogs$dog))
+dogs</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["treat"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["dog"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["p1"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["p5"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p9"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p13"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"treat1","2":"d1","3":"4.0","4":"4.1","5":"3.6","6":"3.1"},{"1":"treat1","2":"d2","3":"4.2","4":"3.7","5":"4.8","6":"5.2"},{"1":"treat1","2":"d3","3":"4.3","4":"4.3","5":"4.5","6":"5.4"},{"1":"treat1","2":"d4","3":"4.2","4":"4.6","5":"5.3","6":"4.9"},{"1":"treat1","2":"d5","3":"4.6","4":"5.3","5":"5.9","6":"5.3"},{"1":"treat1","2":"d6","3":"3.1","4":"4.9","5":"5.3","6":"4.1"},{"1":"treat1","2":"d7","3":"3.7","4":"3.9","5":"5.2","6":"4.2"},{"1":"treat1","2":"d8","3":"4.3","4":"4.4","5":"5.6","6":"4.7"},{"1":"treat1","2":"d9","3":"4.6","4":"4.4","5":"5.4","6":"5.6"},{"1":"treat2","2":"d10","3":"3.2","4":"3.8","5":"4.4","6":"3.7"},{"1":"treat2","2":"d11","3":"3.3","4":"3.4","5":"3.7","6":"3.7"},{"1":"treat2","2":"d12","3":"3.1","4":"3.2","5":"3.2","6":"3.1"},{"1":"treat2","2":"d13","3":"3.6","4":"3.5","5":"4.9","6":"4.4"},{"1":"treat2","2":"d14","3":"4.5","4":"5.4","5":"4.9","6":"4.0"},{"1":"treat2","2":"d15","3":"3.7","4":"4.4","5":"4.6","6":"5.4"},{"1":"treat2","2":"d16","3":"3.5","4":"5.8","5":"4.9","6":"5.6"},{"1":"treat2","2":"d17","3":"3.9","4":"4.1","5":"5.4","6":"3.9"},{"1":"treat3","2":"d18","3":"3.1","4":"3.5","5":"3.0","6":"3.2"},{"1":"treat3","2":"d19","3":"3.3","4":"3.6","5":"3.7","6":"4.4"},{"1":"treat3","2":"d20","3":"3.5","4":"4.7","5":"3.9","6":"3.5"},{"1":"treat3","2":"d21","3":"3.4","4":"3.5","5":"3.4","6":"3.4"},{"1":"treat3","2":"d22","3":"3.7","4":"4.2","5":"3.6","6":"3.7"},{"1":"treat3","2":"d23","3":"4.0","4":"4.8","5":"5.4","6":"4.8"},{"1":"treat3","2":"d24","3":"4.2","4":"4.5","5":"3.9","6":"3.7"},{"1":"treat3","2":"d25","3":"4.1","4":"3.7","5":"4.1","6":"4.7"},{"1":"treat3","2":"d26","3":"3.5","4":"3.6","5":"4.8","6":"5.0"},{"1":"treat4","2":"d27","3":"3.4","4":"3.5","5":"3.1","6":"3.3"},{"1":"treat4","2":"d28","3":"3.0","4":"3.0","5":"3.1","6":"3.1"},{"1":"treat4","2":"d29","3":"3.0","4":"3.2","5":"3.3","6":"3.0"},{"1":"treat4","2":"d30","3":"3.1","4":"3.2","5":"3.3","6":"3.1"},{"1":"treat4","2":"d31","3":"3.8","4":"4.0","5":"3.5","6":"3.4"},{"1":"treat4","2":"d32","3":"3.0","4":"3.2","5":"3.0","6":"3.0"},{"1":"treat4","2":"d33","3":"3.3","4":"3.3","5":"3.6","6":"3.1"},{"1":"treat4","2":"d34","3":"4.2","4":"4.2","5":"4.2","6":"4.0"},{"1":"treat4","2":"d35","3":"4.1","4":"4.3","5":"4.2","6":"4.2"},{"1":"treat4","2":"d36","3":"4.5","4":"4.3","5":"5.3","6":"4.4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="basic-manova" class="section level1">
+<h1>basic manova</h1>
+<pre class="r"><code>resp = cbind(dogs$p1, dogs$p5, dogs$p9, dogs$p13)
+dogs.man = manova(
+    resp ~ treat, data = dogs)
+summary(dogs.man, test=&#39;Wilks&#39;)</code></pre>
+<pre><code>##           Df   Wilks approx F num Df den Df  Pr(&gt;F)  
+## treat      3 0.48452    2.022     12 77.018 0.03316 *
+## Residuals 32                                         
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>SSCP.fn(fits = dogs.man)</code></pre>
+<pre><code>## $SSCPR
+##          [,1]     [,2]      [,3]     [,4]
+## [1,] 1.867111 1.889111  3.879556 3.260667
+## [2,] 1.889111 3.142611  5.513111 4.878944
+## [3,] 3.879556 5.513111 10.622667 8.743778
+## [4,] 3.260667 4.878944  8.743778 7.730722
+## 
+## $SSCPE
+##          [,1]      [,2]      [,3]      [,4]
+## [1,] 7.235111  5.427556  6.418222  5.936000
+## [2,] 5.427556 13.044889  8.520222  6.753556
+## [3,] 6.418222  8.520222 16.259556 11.139556
+## [4,] 5.936000  6.753556 11.139556 16.656778
+## 
+## $SSCPTO
+##           [,1]      [,2]     [,3]      [,4]
+## [1,]  9.102222  7.316667 10.29778  9.196667
+## [2,]  7.316667 16.187500 14.03333 11.632500
+## [3,] 10.297778 14.033333 26.88222 19.883333
+## [4,]  9.196667 11.632500 19.88333 24.387500</code></pre>
+</div>
+<div id="interaction---dataset" class="section level1">
+<h1>interaction - dataset</h1>
+<pre class="r"><code>#define new dataset
+dogs2 = dogs
+dogs2$MVAR1 = dogs2$p5 - dogs2$p1
+dogs2$MVAR2 = dogs2$p9 - dogs2$p5
+dogs2$MVAR3 = dogs2$p13 - dogs2$p9
+#drop unused variables
+dogs2 = dogs2[,!(names(dogs2) %in% c(&quot;p1&quot;, &quot;p5&quot;, &quot;p9&quot;, &quot;p13&quot;))]
+dogs2</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["treat"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["dog"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["MVAR1"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["MVAR2"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["MVAR3"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"treat1","2":"d1","3":"0.1","4":"-0.5","5":"-0.5"},{"1":"treat1","2":"d2","3":"-0.5","4":"1.1","5":"0.4"},{"1":"treat1","2":"d3","3":"0.0","4":"0.2","5":"0.9"},{"1":"treat1","2":"d4","3":"0.4","4":"0.7","5":"-0.4"},{"1":"treat1","2":"d5","3":"0.7","4":"0.6","5":"-0.6"},{"1":"treat1","2":"d6","3":"1.8","4":"0.4","5":"-1.2"},{"1":"treat1","2":"d7","3":"0.2","4":"1.3","5":"-1.0"},{"1":"treat1","2":"d8","3":"0.1","4":"1.2","5":"-0.9"},{"1":"treat1","2":"d9","3":"-0.2","4":"1.0","5":"0.2"},{"1":"treat2","2":"d10","3":"0.6","4":"0.6","5":"-0.7"},{"1":"treat2","2":"d11","3":"0.1","4":"0.3","5":"0.0"},{"1":"treat2","2":"d12","3":"0.1","4":"0.0","5":"-0.1"},{"1":"treat2","2":"d13","3":"-0.1","4":"1.4","5":"-0.5"},{"1":"treat2","2":"d14","3":"0.9","4":"-0.5","5":"-0.9"},{"1":"treat2","2":"d15","3":"0.7","4":"0.2","5":"0.8"},{"1":"treat2","2":"d16","3":"2.3","4":"-0.9","5":"0.7"},{"1":"treat2","2":"d17","3":"0.2","4":"1.3","5":"-1.5"},{"1":"treat3","2":"d18","3":"0.4","4":"-0.5","5":"0.2"},{"1":"treat3","2":"d19","3":"0.3","4":"0.1","5":"0.7"},{"1":"treat3","2":"d20","3":"1.2","4":"-0.8","5":"-0.4"},{"1":"treat3","2":"d21","3":"0.1","4":"-0.1","5":"0.0"},{"1":"treat3","2":"d22","3":"0.5","4":"-0.6","5":"0.1"},{"1":"treat3","2":"d23","3":"0.8","4":"0.6","5":"-0.6"},{"1":"treat3","2":"d24","3":"0.3","4":"-0.6","5":"-0.2"},{"1":"treat3","2":"d25","3":"-0.4","4":"0.4","5":"0.6"},{"1":"treat3","2":"d26","3":"0.1","4":"1.2","5":"0.2"},{"1":"treat4","2":"d27","3":"0.1","4":"-0.4","5":"0.2"},{"1":"treat4","2":"d28","3":"0.0","4":"0.1","5":"0.0"},{"1":"treat4","2":"d29","3":"0.2","4":"0.1","5":"-0.3"},{"1":"treat4","2":"d30","3":"0.1","4":"0.1","5":"-0.2"},{"1":"treat4","2":"d31","3":"0.2","4":"-0.5","5":"-0.1"},{"1":"treat4","2":"d32","3":"0.2","4":"-0.2","5":"0.0"},{"1":"treat4","2":"d33","3":"0.0","4":"0.3","5":"-0.5"},{"1":"treat4","2":"d34","3":"0.0","4":"0.0","5":"-0.2"},{"1":"treat4","2":"d35","3":"0.2","4":"-0.1","5":"0.0"},{"1":"treat4","2":"d36","3":"-0.2","4":"1.0","5":"-0.9"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="interaction" class="section level1">
+<h1>interaction</h1>
+<pre class="r"><code>resp = cbind(dogs2$MVAR1, dogs2$MVAR2, dogs2$MVAR3)
+dogs2.man = manova(
+    resp ~ treat, data = dogs2)
+summary(dogs2.man, test=&#39;Wilks&#39;)</code></pre>
+<pre><code>##           Df   Wilks approx F num Df den Df  Pr(&gt;F)  
+## treat      3 0.59836   1.9098      9 73.163 0.06371 .
+## Residuals 32                                         
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="mains---dataset" class="section level1">
+<h1>Mains - dataset</h1>
+<pre class="r"><code>#define new dataset
+dogs3 = dogs
+dogs3$MVAR1 = dogs3$p1 + dogs3$p5 + dogs3$p9 + dogs3$p13
+#drop unused variables
+dogs3 = dogs3[,!(names(dogs3) %in% c(&quot;p1&quot;, &quot;p5&quot;, &quot;p9&quot;, &quot;p13&quot;))]
+dogs3</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["treat"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["dog"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["MVAR1"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"treat1","2":"d1","3":"14.8"},{"1":"treat1","2":"d2","3":"17.9"},{"1":"treat1","2":"d3","3":"18.5"},{"1":"treat1","2":"d4","3":"19.0"},{"1":"treat1","2":"d5","3":"21.1"},{"1":"treat1","2":"d6","3":"17.4"},{"1":"treat1","2":"d7","3":"17.0"},{"1":"treat1","2":"d8","3":"19.0"},{"1":"treat1","2":"d9","3":"20.0"},{"1":"treat2","2":"d10","3":"15.1"},{"1":"treat2","2":"d11","3":"14.1"},{"1":"treat2","2":"d12","3":"12.6"},{"1":"treat2","2":"d13","3":"16.4"},{"1":"treat2","2":"d14","3":"18.8"},{"1":"treat2","2":"d15","3":"18.1"},{"1":"treat2","2":"d16","3":"19.8"},{"1":"treat2","2":"d17","3":"17.3"},{"1":"treat3","2":"d18","3":"12.8"},{"1":"treat3","2":"d19","3":"15.0"},{"1":"treat3","2":"d20","3":"15.6"},{"1":"treat3","2":"d21","3":"13.7"},{"1":"treat3","2":"d22","3":"15.2"},{"1":"treat3","2":"d23","3":"19.0"},{"1":"treat3","2":"d24","3":"16.3"},{"1":"treat3","2":"d25","3":"16.6"},{"1":"treat3","2":"d26","3":"16.9"},{"1":"treat4","2":"d27","3":"13.3"},{"1":"treat4","2":"d28","3":"12.2"},{"1":"treat4","2":"d29","3":"12.5"},{"1":"treat4","2":"d30","3":"12.7"},{"1":"treat4","2":"d31","3":"14.7"},{"1":"treat4","2":"d32","3":"12.2"},{"1":"treat4","2":"d33","3":"13.3"},{"1":"treat4","2":"d34","3":"16.6"},{"1":"treat4","2":"d35","3":"16.8"},{"1":"treat4","2":"d36","3":"18.5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="mains---test" class="section level1">
+<h1>Mains - test</h1>
+<pre class="r"><code>dogs3.aov = aov(
+    MVAR1 ~ treat, data = dogs3)
+summary(dogs3.aov)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)   
+## treat        3  79.69  26.564   6.004 0.0023 **
+## Residuals   32 141.59   4.425                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
