@@ -29,11 +29,11 @@ bugs
 ```
 
 ```{r}
-bugs.lda = lda(formula = bug ~ w.j1 + w.j2 + w.ae, 
+bugs.lda = lda(formula = bug ~ w.j1 + w.j2 + w.ae, method = "moment",
          data = bugs, 
          prior = c(1,1)/2)
 		 
-predict(bugs.lda, data.frame(w.j1 = c(194), w.j2 = c(124), w.ae = c(49)))
+predict(bugs.lda, data.frame(w.j1 = c(194), w.j2 = c(124), w.ae = c(49)))$posterior
 
 e = exp(1)
 (e^202.359)/((e^202.359)+(e^205.219))
