@@ -1,0 +1,41 @@
+---
+title: "L10 - LDA"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+LDA on Insect Data
+
+#libraries
+```{r, imports1}
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(MASS)
+```
+
+[R discriminant](http://uc-r.github.io/discriminant_analysis)
+
+# Read data
+```{r}
+#read the input data
+bugs = read.table("../data/insect.txt", sep = " ",
+	col.names = c("type", "w1", "w2", "wae"),
+	stringsAsFactors = TRUE)
+bugs
+```
+
+# LDA
+```{r}
+#fit the LDA with equal prior prob
+#bugs.lda = lda(formula = type ~ ., data = bugs)
+bugs.lda = lda(formula = type ~ ., data = bugs, prior = c(1,1)/2)
+#predict for new observation
+predict(bugs.lda, data.frame(w1 = c(194), w2 = c(124), wae = c(49)))
+#compare with prob from notes (does not exactly match?)
+exp(202.359)/(exp(202.359)+exp(205.219))
+```
