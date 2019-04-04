@@ -27,5 +27,7 @@ navbar:
           href: manova2.html
         - text: "Split-Plot ANOVA"
           href: split-plot.html
+        - text: "LDA"
+          href: LDA.html
     - text: "About"
       href: about.html
