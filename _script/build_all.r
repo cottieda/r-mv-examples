@@ -35,6 +35,9 @@ filenames = basename(filepaths)
 filetargets = paste0("./_web/", filenames)
 file.copy(filepaths, filetargets)
 
+# rename index.rmd to index.Rmd
+file.rename("index.rmd","index.Rmd")
+
 #move the _yml into the /web directory
 file.copy("_site.yml", "./_web/_site.yml")
 
