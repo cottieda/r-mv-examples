@@ -10,7 +10,7 @@ output:
 ---
 
 #Libraries
-```{r, lib1}
+```{r}
 library("dplyr")
 ```
 

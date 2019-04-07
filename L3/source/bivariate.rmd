@@ -12,7 +12,7 @@ output:
 Exploration of the calcium (and transforms) vs iron (and transforms) relationship in the nutrient
 dataset. 
 
-```{r, import1}
+```{r}
 #libraries
 library(ggplot2)
 library(reshape2)
@@ -31,7 +31,7 @@ n
 ```
 
 #Explore calcium vs iron relationship
-```{r, exp1, fig.width=8.5, fig.height=8.5}
+```{r, fig.width=8.5, fig.height=8.5}
 #setup graphical parameters - plot as 2 x 2 array
 g = par(mfrow=c(2,2), cex = 0.75)
 
@@ -72,7 +72,7 @@ par(g)
 ```
 
 #Generate potential transforms
-```{r, gen1}
+```{r}
 #square root transform
 n$calcium_rt2 = n$calcium^(1/2)
 n$iron_rt2 = n$iron^(1/2)
@@ -90,7 +90,7 @@ n[,c(calcium_transforms, iron_transforms)]
 ```
 
 #Evaluate transforms
-```{r, eval1, fig.width=8.5,fig.height=8.5}
+```{r, fig.width=8.5,fig.height=8.5}
 #reform data to a tall-skinny dataframe with every combination of predictor and response transform
 pred = melt(
 	n[,iron_transforms],
@@ -132,7 +132,7 @@ rsq = pairs %>%
 ## Transformation Pairs {.tabset}
 
 ### Scatterplots
-```{r, scatter1, collapse = TRUE}
+```{r, collapse = TRUE}
 ggplot(pairs, aes(x=predictor, y=response)) + 
 	geom_point() +
 	geom_smooth(method = "lm", se = FALSE) +
@@ -142,14 +142,14 @@ ggplot(pairs, aes(x=predictor, y=response)) +
 ```
 
 ### Residual Histogram
-```{r, hist1, collapse = TRUE}
+```{r, collapse = TRUE}
 ggplot(pairs, aes(x=residual.std)) + 
 	geom_histogram() +
 	facet_grid(calcium_transform ~ iron_transform, switch="y")+
 	ggtitle("Histogram of Standardized Residuals")
 ```
 ### Residuals
-```{r, resid1, collapse = TRUE}
+```{r, collapse = TRUE}
 ggplot(pairs, aes(x=predictor, y=residual.std)) + 
 	geom_point() +
 	geom_hline(yintercept = 0) +
@@ -158,7 +158,7 @@ ggplot(pairs, aes(x=predictor, y=residual.std)) +
 ```
 
 ### Residual Q-Q
-```{r, qq1, collapse = TRUE}
+```{r, collapse = TRUE}
 ggplot(pairs, aes(sample=residual.std)) + 
 	geom_qq() +
 	geom_abline(intercept = 0, slope = 1) +
@@ -166,7 +166,7 @@ ggplot(pairs, aes(sample=residual.std)) +
 	ggtitle("Q-Q Plot of Residuals")
 ```
 	
-```{r, pairs}
+```{r}
 rsq = pairs %>%
 	group_by(iron_transform, calcium_transform) %>%
 	do(

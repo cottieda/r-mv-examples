@@ -12,14 +12,14 @@ output:
 Test Manova on Pottery Data
 
 #libraries
-```{r, imports1}
+```{r}
 library(ggplot2)
 library(reshape2)
 library(dplyr)
 ```
 
 # Read data
-```{r, read1}
+```{r}
 #read the input data
 pottery = read.table("../data/pottery.txt", sep = " ",
 	col.names = c("site", "al", "fe", "mg", "ca", "na"),
@@ -28,7 +28,7 @@ pottery
 ```
 
 #Compute Manova
-```{r, manova1, }
+```{r}
 resp = cbind(pottery$al, pottery$fe, pottery$mg, pottery$ca, pottery$na)
 pottery.man = manova(
 	resp ~ site, data = pottery)

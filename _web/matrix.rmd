@@ -12,7 +12,7 @@ output:
 #Declare Matrix
 
 Entires should be one list, going down the columns
-```{r, declare1}
+```{r}
 #declare input A
 A = matrix(c(3, 1, -1, 5, 2, 4), nrow = 2)
 A
@@ -37,7 +37,7 @@ C
 
 #Basic manipulations
 
-```{r, manip}
+```{r}
 #transpose
 A
 t(A)
@@ -50,7 +50,7 @@ dim(B)
 
 Need to use %\*% and not \*
 
-```{r, mult}
+```{r}
 #do multiplication
 Z = A %*% B
 Z

@@ -9,7 +9,6 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="" />
 
 
 <title>Manova Repeated Measures</title>
@@ -75,7 +74,9 @@ h6 {
 </style>
 
 
+</head>
 
+<body>
 
 <style type = "text/css">
 .main-container {
@@ -193,6 +194,8 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
+
+<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -351,16 +354,6 @@ div.tocify {
 
 </style>
 
-
-
-</head>
-
-<body>
-
-
-<div class="container-fluid main-container">
-
-
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -464,16 +457,19 @@ div.tocify {
 
 
 <p>Test Manova Repeated Measures on Dog Data</p>
-<p>#libraries</p>
+<div id="libraries" class="section level1">
+<h1>libraries</h1>
 <pre class="r"><code>library(ggplot2)
 library(reshape2)
 library(dplyr)
 library(MASS)</code></pre>
+<pre><code>## Warning: package &#39;MASS&#39; was built under R version 3.5.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;MASS&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     select</code></pre>
+</div>
 <div id="read-data" class="section level1">
 <h1>Read data</h1>
 <pre class="r"><code>#read the input data
@@ -497,7 +493,9 @@ predict(bugs.lda, data.frame(w.j1 = c(194), w.j2 = c(124), w.ae = c(49)))$poster
 (e^202.359)/((e^202.359)+(e^205.219))</code></pre>
 <pre><code>## [1] 0.0541667</code></pre>
 <p>LDA on Insect Data</p>
-<p>#libraries</p>
+</div>
+<div id="libraries-1" class="section level1">
+<h1>libraries</h1>
 <pre class="r"><code>library(ggplot2)
 library(reshape2)
 library(dplyr)

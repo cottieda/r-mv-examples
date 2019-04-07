@@ -13,7 +13,7 @@ Exploration of the calcium variable and potential transforms to acheive normalit
 
 # Read input data
 
-```{r, read1}
+```{r}
 #read input file
 n = read.table(
 	file = "../data/nutrient.txt",
@@ -22,7 +22,7 @@ n = read.table(
 n
 ```
 # Explore calcium variable
-```{r, exp1}
+```{r}
 #define plotting function
 norm_plot = function(df, col){
 	#histogram
@@ -50,7 +50,7 @@ par(g)
 
 
 # Generate potential transforms
-```{r, trans1}
+```{r}
 #square root transform
 n$calcium_rt2 = sqrt(n$calcium)
 #4th root transform
@@ -63,7 +63,7 @@ n[,c("calcium","calcium_rt2","calcium_rt4","calcium_ln")]
 
 
 # Evaluate transforms
-```{r, eval1, fig.width=8.5, fig.height=11}
+```{r, fig.width=8.5, fig.height=11}
 #setup graphical parameters - plot as 4 x 2 array
 g = par(mfrow=c(4,2))
 #make plots for each variable of interest...
@@ -85,7 +85,7 @@ par(g)
 ```
 
 # Select variables
-```{r, select1}
+```{r}
 #drop two unsuccessful transforms
 n = subset(n, select = -c(calcium_rt2,calcium_ln))
 #print data

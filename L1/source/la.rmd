@@ -11,7 +11,7 @@ output:
 
 #Declare Matrix
 
-```{r, declare1}
+```{r}
 #declare input A
 A = matrix(c(13, -4, 2, -4, 13, -2, 2, -2, 10), nrow = 3)
 A

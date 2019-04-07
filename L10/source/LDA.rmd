@@ -12,7 +12,7 @@ output:
 Test Manova Repeated Measures on Dog Data
 
 #libraries
-```{r, imports1}
+```{r}
 library(ggplot2)
 library(reshape2)
 library(dplyr)

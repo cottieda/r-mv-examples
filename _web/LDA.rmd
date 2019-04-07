@@ -12,7 +12,7 @@ output:
 Test Manova Repeated Measures on Dog Data
 
 #libraries
-```{r, imports1}
+```{r}
 library(ggplot2)
 library(reshape2)
 library(dplyr)
@@ -53,7 +53,7 @@ output:
 LDA on Insect Data
 
 #libraries
-```{r, imports1abc}
+```{r}
 library(ggplot2)
 library(reshape2)
 library(dplyr)

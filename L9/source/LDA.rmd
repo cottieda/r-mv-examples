@@ -11,7 +11,7 @@ output:
 LDA on Insect Data
 
 #libraries
-```{r, imports1abc}
+```{r}
 library(ggplot2)
 library(reshape2)
 library(dplyr)
