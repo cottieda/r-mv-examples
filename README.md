@@ -37,8 +37,11 @@ When creating new chapters, the following items must be followed due to the flat
    * (e.g. \L1\source\test.rmd and \L2\source\test.rmd would create a conflict in the generated website even though individual units would build fine)
  * any datasets must have unique names across the full project  
    * (e.g. \L1\data\swiss.dat and \L2\data\swiss.dat would create a conflict in the generated website even though individual units would build fine)
+ * any R chunk names must be unique accross all files 
+   * Probably best to leave R chunks unnamed when possible  
+   * (e.g. ```{r, import} ...code... ``` in file1.rmd would conflict with ```{r, import} ...other code... ``` in file2.rmd  
 
-Note that the formate of the generated website is not tied to the structure of the chapters.  
+Note that the format of the generated website is not tied to the structure of the chapters.  
 Instead, the output website format is defined in
 ```
 \r-mv-examples\_site.yml
