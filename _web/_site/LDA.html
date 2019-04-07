@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="" />
 
 
-<title>Split-Plot Repeated Measures</title>
+<title>Manova Repeated Measures</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -74,9 +75,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -194,8 +193,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -354,6 +351,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -431,6 +438,9 @@ div.tocify {
     <li>
       <a href="split-plot.html">Split-Plot ANOVA</a>
     </li>
+    <li>
+      <a href="LDA.html">LDA</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -448,75 +458,86 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Split-Plot Repeated Measures</h1>
+<h1 class="title toc-ignore">Manova Repeated Measures</h1>
 
 </div>
 
 
-<p>Test Split-Plot Anova Repeated Measures on Dog Data</p>
-<div id="libraries" class="section level1">
-<h1>libraries</h1>
+<p>Test Manova Repeated Measures on Dog Data</p>
+<p>#libraries</p>
 <pre class="r"><code>library(ggplot2)
 library(reshape2)
 library(dplyr)
-library(lme4)</code></pre>
-</div>
+library(MASS)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
 <div id="read-data" class="section level1">
 <h1>Read data</h1>
 <pre class="r"><code>#read the input data
-dogs = read.table(&quot;../data/dog1.txt&quot;, sep = &quot; &quot;,
-    col.names = c(&quot;treat&quot;, &quot;dog&quot;, &quot;p1&quot;, &quot;p5&quot;, &quot;p9&quot;, &quot;p13&quot;),
+bugs = read.table(&quot;../data/insect.txt&quot;, sep = &quot; &quot;,
+    col.names = c(&quot;bug&quot;,&quot;w.j1&quot;,&quot;w.j2&quot;,&quot;w.ae&quot;),
     stringsAsFactors = TRUE)
-#treatment and dog should be a factor
-dogs$treat = factor(paste0(&quot;treat&quot;,dogs$treat))
-dogs$dog = factor(paste0(&quot;d&quot;,dogs$dog))
-#make data tall-skinny on time
-dogs_ts = melt(dogs, id.vars = c(&quot;treat&quot;,&quot;dog&quot;), variable.name = &quot;time&quot;, measure.vars = c(&quot;p1&quot;,&quot;p5&quot;,&quot;p9&quot;,&quot;p13&quot;), value.name = &quot;k&quot;)
-#replace period names with times by stripping off &#39;p&#39;
-#dogs_ts$time = as.numeric(substr(dogs_ts$time,2,100))
-dogs_ts</code></pre>
+bugs</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["treat"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["dog"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["time"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["k"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"treat1","2":"d1","3":"p1","4":"4.0"},{"1":"treat1","2":"d2","3":"p1","4":"4.2"},{"1":"treat1","2":"d3","3":"p1","4":"4.3"},{"1":"treat1","2":"d4","3":"p1","4":"4.2"},{"1":"treat1","2":"d5","3":"p1","4":"4.6"},{"1":"treat1","2":"d6","3":"p1","4":"3.1"},{"1":"treat1","2":"d7","3":"p1","4":"3.7"},{"1":"treat1","2":"d8","3":"p1","4":"4.3"},{"1":"treat1","2":"d9","3":"p1","4":"4.6"},{"1":"treat2","2":"d10","3":"p1","4":"3.2"},{"1":"treat2","2":"d11","3":"p1","4":"3.3"},{"1":"treat2","2":"d12","3":"p1","4":"3.1"},{"1":"treat2","2":"d13","3":"p1","4":"3.6"},{"1":"treat2","2":"d14","3":"p1","4":"4.5"},{"1":"treat2","2":"d15","3":"p1","4":"3.7"},{"1":"treat2","2":"d16","3":"p1","4":"3.5"},{"1":"treat2","2":"d17","3":"p1","4":"3.9"},{"1":"treat3","2":"d18","3":"p1","4":"3.1"},{"1":"treat3","2":"d19","3":"p1","4":"3.3"},{"1":"treat3","2":"d20","3":"p1","4":"3.5"},{"1":"treat3","2":"d21","3":"p1","4":"3.4"},{"1":"treat3","2":"d22","3":"p1","4":"3.7"},{"1":"treat3","2":"d23","3":"p1","4":"4.0"},{"1":"treat3","2":"d24","3":"p1","4":"4.2"},{"1":"treat3","2":"d25","3":"p1","4":"4.1"},{"1":"treat3","2":"d26","3":"p1","4":"3.5"},{"1":"treat4","2":"d27","3":"p1","4":"3.4"},{"1":"treat4","2":"d28","3":"p1","4":"3.0"},{"1":"treat4","2":"d29","3":"p1","4":"3.0"},{"1":"treat4","2":"d30","3":"p1","4":"3.1"},{"1":"treat4","2":"d31","3":"p1","4":"3.8"},{"1":"treat4","2":"d32","3":"p1","4":"3.0"},{"1":"treat4","2":"d33","3":"p1","4":"3.3"},{"1":"treat4","2":"d34","3":"p1","4":"4.2"},{"1":"treat4","2":"d35","3":"p1","4":"4.1"},{"1":"treat4","2":"d36","3":"p1","4":"4.5"},{"1":"treat1","2":"d1","3":"p5","4":"4.1"},{"1":"treat1","2":"d2","3":"p5","4":"3.7"},{"1":"treat1","2":"d3","3":"p5","4":"4.3"},{"1":"treat1","2":"d4","3":"p5","4":"4.6"},{"1":"treat1","2":"d5","3":"p5","4":"5.3"},{"1":"treat1","2":"d6","3":"p5","4":"4.9"},{"1":"treat1","2":"d7","3":"p5","4":"3.9"},{"1":"treat1","2":"d8","3":"p5","4":"4.4"},{"1":"treat1","2":"d9","3":"p5","4":"4.4"},{"1":"treat2","2":"d10","3":"p5","4":"3.8"},{"1":"treat2","2":"d11","3":"p5","4":"3.4"},{"1":"treat2","2":"d12","3":"p5","4":"3.2"},{"1":"treat2","2":"d13","3":"p5","4":"3.5"},{"1":"treat2","2":"d14","3":"p5","4":"5.4"},{"1":"treat2","2":"d15","3":"p5","4":"4.4"},{"1":"treat2","2":"d16","3":"p5","4":"5.8"},{"1":"treat2","2":"d17","3":"p5","4":"4.1"},{"1":"treat3","2":"d18","3":"p5","4":"3.5"},{"1":"treat3","2":"d19","3":"p5","4":"3.6"},{"1":"treat3","2":"d20","3":"p5","4":"4.7"},{"1":"treat3","2":"d21","3":"p5","4":"3.5"},{"1":"treat3","2":"d22","3":"p5","4":"4.2"},{"1":"treat3","2":"d23","3":"p5","4":"4.8"},{"1":"treat3","2":"d24","3":"p5","4":"4.5"},{"1":"treat3","2":"d25","3":"p5","4":"3.7"},{"1":"treat3","2":"d26","3":"p5","4":"3.6"},{"1":"treat4","2":"d27","3":"p5","4":"3.5"},{"1":"treat4","2":"d28","3":"p5","4":"3.0"},{"1":"treat4","2":"d29","3":"p5","4":"3.2"},{"1":"treat4","2":"d30","3":"p5","4":"3.2"},{"1":"treat4","2":"d31","3":"p5","4":"4.0"},{"1":"treat4","2":"d32","3":"p5","4":"3.2"},{"1":"treat4","2":"d33","3":"p5","4":"3.3"},{"1":"treat4","2":"d34","3":"p5","4":"4.2"},{"1":"treat4","2":"d35","3":"p5","4":"4.3"},{"1":"treat4","2":"d36","3":"p5","4":"4.3"},{"1":"treat1","2":"d1","3":"p9","4":"3.6"},{"1":"treat1","2":"d2","3":"p9","4":"4.8"},{"1":"treat1","2":"d3","3":"p9","4":"4.5"},{"1":"treat1","2":"d4","3":"p9","4":"5.3"},{"1":"treat1","2":"d5","3":"p9","4":"5.9"},{"1":"treat1","2":"d6","3":"p9","4":"5.3"},{"1":"treat1","2":"d7","3":"p9","4":"5.2"},{"1":"treat1","2":"d8","3":"p9","4":"5.6"},{"1":"treat1","2":"d9","3":"p9","4":"5.4"},{"1":"treat2","2":"d10","3":"p9","4":"4.4"},{"1":"treat2","2":"d11","3":"p9","4":"3.7"},{"1":"treat2","2":"d12","3":"p9","4":"3.2"},{"1":"treat2","2":"d13","3":"p9","4":"4.9"},{"1":"treat2","2":"d14","3":"p9","4":"4.9"},{"1":"treat2","2":"d15","3":"p9","4":"4.6"},{"1":"treat2","2":"d16","3":"p9","4":"4.9"},{"1":"treat2","2":"d17","3":"p9","4":"5.4"},{"1":"treat3","2":"d18","3":"p9","4":"3.0"},{"1":"treat3","2":"d19","3":"p9","4":"3.7"},{"1":"treat3","2":"d20","3":"p9","4":"3.9"},{"1":"treat3","2":"d21","3":"p9","4":"3.4"},{"1":"treat3","2":"d22","3":"p9","4":"3.6"},{"1":"treat3","2":"d23","3":"p9","4":"5.4"},{"1":"treat3","2":"d24","3":"p9","4":"3.9"},{"1":"treat3","2":"d25","3":"p9","4":"4.1"},{"1":"treat3","2":"d26","3":"p9","4":"4.8"},{"1":"treat4","2":"d27","3":"p9","4":"3.1"},{"1":"treat4","2":"d28","3":"p9","4":"3.1"},{"1":"treat4","2":"d29","3":"p9","4":"3.3"},{"1":"treat4","2":"d30","3":"p9","4":"3.3"},{"1":"treat4","2":"d31","3":"p9","4":"3.5"},{"1":"treat4","2":"d32","3":"p9","4":"3.0"},{"1":"treat4","2":"d33","3":"p9","4":"3.6"},{"1":"treat4","2":"d34","3":"p9","4":"4.2"},{"1":"treat4","2":"d35","3":"p9","4":"4.2"},{"1":"treat4","2":"d36","3":"p9","4":"5.3"},{"1":"treat1","2":"d1","3":"p13","4":"3.1"},{"1":"treat1","2":"d2","3":"p13","4":"5.2"},{"1":"treat1","2":"d3","3":"p13","4":"5.4"},{"1":"treat1","2":"d4","3":"p13","4":"4.9"},{"1":"treat1","2":"d5","3":"p13","4":"5.3"},{"1":"treat1","2":"d6","3":"p13","4":"4.1"},{"1":"treat1","2":"d7","3":"p13","4":"4.2"},{"1":"treat1","2":"d8","3":"p13","4":"4.7"},{"1":"treat1","2":"d9","3":"p13","4":"5.6"},{"1":"treat2","2":"d10","3":"p13","4":"3.7"},{"1":"treat2","2":"d11","3":"p13","4":"3.7"},{"1":"treat2","2":"d12","3":"p13","4":"3.1"},{"1":"treat2","2":"d13","3":"p13","4":"4.4"},{"1":"treat2","2":"d14","3":"p13","4":"4.0"},{"1":"treat2","2":"d15","3":"p13","4":"5.4"},{"1":"treat2","2":"d16","3":"p13","4":"5.6"},{"1":"treat2","2":"d17","3":"p13","4":"3.9"},{"1":"treat3","2":"d18","3":"p13","4":"3.2"},{"1":"treat3","2":"d19","3":"p13","4":"4.4"},{"1":"treat3","2":"d20","3":"p13","4":"3.5"},{"1":"treat3","2":"d21","3":"p13","4":"3.4"},{"1":"treat3","2":"d22","3":"p13","4":"3.7"},{"1":"treat3","2":"d23","3":"p13","4":"4.8"},{"1":"treat3","2":"d24","3":"p13","4":"3.7"},{"1":"treat3","2":"d25","3":"p13","4":"4.7"},{"1":"treat3","2":"d26","3":"p13","4":"5.0"},{"1":"treat4","2":"d27","3":"p13","4":"3.3"},{"1":"treat4","2":"d28","3":"p13","4":"3.1"},{"1":"treat4","2":"d29","3":"p13","4":"3.0"},{"1":"treat4","2":"d30","3":"p13","4":"3.1"},{"1":"treat4","2":"d31","3":"p13","4":"3.4"},{"1":"treat4","2":"d32","3":"p13","4":"3.0"},{"1":"treat4","2":"d33","3":"p13","4":"3.1"},{"1":"treat4","2":"d34","3":"p13","4":"4.0"},{"1":"treat4","2":"d35","3":"p13","4":"4.2"},{"1":"treat4","2":"d36","3":"p13","4":"4.4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["bug"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["w.j1"],"name":[2],"type":["int"],"align":["right"]},{"label":["w.j2"],"name":[3],"type":["int"],"align":["right"]},{"label":["w.ae"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"a","2":"191","3":"131","4":"53"},{"1":"a","2":"185","3":"134","4":"50"},{"1":"a","2":"200","3":"137","4":"52"},{"1":"a","2":"173","3":"127","4":"50"},{"1":"a","2":"171","3":"128","4":"49"},{"1":"a","2":"160","3":"118","4":"47"},{"1":"a","2":"188","3":"134","4":"54"},{"1":"a","2":"186","3":"129","4":"51"},{"1":"a","2":"174","3":"131","4":"52"},{"1":"a","2":"163","3":"115","4":"47"},{"1":"b","2":"186","3":"107","4":"49"},{"1":"b","2":"211","3":"122","4":"49"},{"1":"b","2":"201","3":"144","4":"47"},{"1":"b","2":"242","3":"131","4":"54"},{"1":"b","2":"184","3":"108","4":"43"},{"1":"b","2":"211","3":"118","4":"51"},{"1":"b","2":"217","3":"122","4":"49"},{"1":"b","2":"223","3":"127","4":"51"},{"1":"b","2":"208","3":"125","4":"50"},{"1":"b","2":"199","3":"124","4":"46"},{"1":"a","2":"191","3":"131","4":"53"},{"1":"a","2":"185","3":"134","4":"50"},{"1":"a","2":"200","3":"137","4":"52"},{"1":"a","2":"173","3":"127","4":"50"},{"1":"a","2":"171","3":"128","4":"49"},{"1":"a","2":"160","3":"118","4":"47"},{"1":"a","2":"188","3":"134","4":"54"},{"1":"a","2":"186","3":"129","4":"51"},{"1":"a","2":"174","3":"131","4":"52"},{"1":"a","2":"163","3":"115","4":"47"},{"1":"b","2":"186","3":"107","4":"49"},{"1":"b","2":"211","3":"122","4":"49"},{"1":"b","2":"201","3":"144","4":"47"},{"1":"b","2":"242","3":"131","4":"54"},{"1":"b","2":"184","3":"108","4":"43"},{"1":"b","2":"211","3":"118","4":"51"},{"1":"b","2":"217","3":"122","4":"49"},{"1":"b","2":"223","3":"127","4":"51"},{"1":"b","2":"208","3":"125","4":"50"},{"1":"b","2":"199","3":"124","4":"46"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<pre class="r"><code>res1 = aov(k ~ treat*time + Error(dog:treat), data = dogs_ts)</code></pre>
-<pre><code>## Warning in aov(k ~ treat * time + Error(dog:treat), data = dogs_ts):
-## Error() model is singular</code></pre>
-<pre class="r"><code>summary(res1)</code></pre>
-<pre><code>## 
-## Error: dog:treat
-##           Df Sum Sq Mean Sq F value Pr(&gt;F)   
-## treat      3  19.92   6.641   6.004 0.0023 **
-## Residuals 32  35.40   1.106                  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+<pre class="r"><code>bugs.lda = lda(formula = bug ~ w.j1 + w.j2 + w.ae, method = &quot;moment&quot;,
+         data = bugs, 
+         prior = c(1,1)/2)
+         
+predict(bugs.lda, data.frame(w.j1 = c(194), w.j2 = c(124), w.ae = c(49)))$posterior</code></pre>
+<pre><code>##            a         b
+## 1 0.05031021 0.9496898</code></pre>
+<pre class="r"><code>e = exp(1)
+(e^202.359)/((e^202.359)+(e^205.219))</code></pre>
+<pre><code>## [1] 0.0541667</code></pre>
+<p>LDA on Insect Data</p>
+<p>#libraries</p>
+<pre class="r"><code>library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(MASS)</code></pre>
+<p><a href="http://uc-r.github.io/discriminant_analysis">R discriminant</a></p>
+</div>
+<div id="read-data-1" class="section level1">
+<h1>Read data</h1>
+<pre class="r"><code>#read the input data
+bugs = read.table(&quot;../data/insect.txt&quot;, sep = &quot; &quot;,
+    col.names = c(&quot;type&quot;, &quot;w1&quot;, &quot;w2&quot;, &quot;wae&quot;),
+    stringsAsFactors = TRUE)
+bugs</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["type"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["w1"],"name":[2],"type":["int"],"align":["right"]},{"label":["w2"],"name":[3],"type":["int"],"align":["right"]},{"label":["wae"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"a","2":"191","3":"131","4":"53"},{"1":"a","2":"185","3":"134","4":"50"},{"1":"a","2":"200","3":"137","4":"52"},{"1":"a","2":"173","3":"127","4":"50"},{"1":"a","2":"171","3":"128","4":"49"},{"1":"a","2":"160","3":"118","4":"47"},{"1":"a","2":"188","3":"134","4":"54"},{"1":"a","2":"186","3":"129","4":"51"},{"1":"a","2":"174","3":"131","4":"52"},{"1":"a","2":"163","3":"115","4":"47"},{"1":"b","2":"186","3":"107","4":"49"},{"1":"b","2":"211","3":"122","4":"49"},{"1":"b","2":"201","3":"144","4":"47"},{"1":"b","2":"242","3":"131","4":"54"},{"1":"b","2":"184","3":"108","4":"43"},{"1":"b","2":"211","3":"118","4":"51"},{"1":"b","2":"217","3":"122","4":"49"},{"1":"b","2":"223","3":"127","4":"51"},{"1":"b","2":"208","3":"125","4":"50"},{"1":"b","2":"199","3":"124","4":"46"},{"1":"a","2":"191","3":"131","4":"53"},{"1":"a","2":"185","3":"134","4":"50"},{"1":"a","2":"200","3":"137","4":"52"},{"1":"a","2":"173","3":"127","4":"50"},{"1":"a","2":"171","3":"128","4":"49"},{"1":"a","2":"160","3":"118","4":"47"},{"1":"a","2":"188","3":"134","4":"54"},{"1":"a","2":"186","3":"129","4":"51"},{"1":"a","2":"174","3":"131","4":"52"},{"1":"a","2":"163","3":"115","4":"47"},{"1":"b","2":"186","3":"107","4":"49"},{"1":"b","2":"211","3":"122","4":"49"},{"1":"b","2":"201","3":"144","4":"47"},{"1":"b","2":"242","3":"131","4":"54"},{"1":"b","2":"184","3":"108","4":"43"},{"1":"b","2":"211","3":"118","4":"51"},{"1":"b","2":"217","3":"122","4":"49"},{"1":"b","2":"223","3":"127","4":"51"},{"1":"b","2":"208","3":"125","4":"50"},{"1":"b","2":"199","3":"124","4":"46"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="lda" class="section level1">
+<h1>LDA</h1>
+<pre class="r"><code>#fit the LDA with equal prior prob
+#bugs.lda = lda(formula = type ~ ., data = bugs)
+bugs.lda = lda(formula = type ~ ., data = bugs, prior = c(1,1)/2)
+#predict for new observation
+predict(bugs.lda, data.frame(w1 = c(194), w2 = c(124), wae = c(49)))</code></pre>
+<pre><code>## $class
+## [1] b
+## Levels: a b
 ## 
-## Error: Within
-##            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-## time        3  5.761  1.9202  10.356 5.74e-06 ***
-## treat:time  9  3.440  0.3822   2.061   0.0406 *  
-## Residuals  96 17.800  0.1854                     
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>res2 = aov(k ~ treat + time + Error(dog:treat), data = dogs_ts)</code></pre>
-<pre><code>## Warning in aov(k ~ treat + time + Error(dog:treat), data = dogs_ts):
-## Error() model is singular</code></pre>
-<pre class="r"><code>summary(res2)</code></pre>
-<pre><code>## 
-## Error: dog:treat
-##           Df Sum Sq Mean Sq F value Pr(&gt;F)   
-## treat      3  19.92   6.641   6.004 0.0023 **
-## Residuals 32  35.40   1.106                  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## $posterior
+##            a         b
+## 1 0.05031021 0.9496898
 ## 
-## Error: Within
-##            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-## time        3  5.761  1.9202   9.493 1.33e-05 ***
-## Residuals 105 21.239  0.2023                     
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+## $x
+##         LD1
+## 1 0.5567926</code></pre>
+<pre class="r"><code>#compare with prob from notes (does not exactly match?)
+exp(202.359)/(exp(202.359)+exp(205.219))</code></pre>
+<pre><code>## [1] 0.0541667</code></pre>
 </div>
 
 

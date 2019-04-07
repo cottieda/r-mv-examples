@@ -1,4 +1,46 @@
 ---
+title: "Manova Repeated Measures"
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+---
+
+Test Manova Repeated Measures on Dog Data
+
+#libraries
+```{r, imports1}
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(MASS)
+```
+
+# Read data
+```{r}
+#read the input data
+bugs = read.table("../data/insect.txt", sep = " ",
+	col.names = c("bug","w.j1","w.j2","w.ae"),
+	stringsAsFactors = TRUE)
+bugs
+```
+
+```{r}
+bugs.lda = lda(formula = bug ~ w.j1 + w.j2 + w.ae, method = "moment",
+         data = bugs, 
+         prior = c(1,1)/2)
+		 
+predict(bugs.lda, data.frame(w.j1 = c(194), w.j2 = c(124), w.ae = c(49)))$posterior
+
+e = exp(1)
+(e^202.359)/((e^202.359)+(e^205.219))
+
+```
+
+---
 title: "L10 - LDA"
 author: ""
 date: ""

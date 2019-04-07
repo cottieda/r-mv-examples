@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Build the full website
+Rscript build_all.r
+
+#  open website
+sensible-browser  "./../../_web/_site/index.html"
+
+

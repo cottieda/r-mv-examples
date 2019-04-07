@@ -1,0 +1,5 @@
+---
+title: "R Examples for Multivariate Analysis"
+---
+
+Use the tabs above to navigate the examples

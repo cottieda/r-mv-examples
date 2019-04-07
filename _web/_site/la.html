@@ -9,6 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="" />
 
 
 <title>Basic Linear Algebra</title>
@@ -74,9 +75,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -194,8 +193,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -354,6 +351,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -431,6 +438,9 @@ div.tocify {
     <li>
       <a href="split-plot.html">Split-Plot ANOVA</a>
     </li>
+    <li>
+      <a href="LDA.html">LDA</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -453,8 +463,7 @@ div.tocify {
 </div>
 
 
-<div id="declare-matrix" class="section level1">
-<h1>Declare Matrix</h1>
+<p>#Declare Matrix</p>
 <pre class="r"><code>#declare input A
 A = matrix(c(13, -4, 2, -4, 13, -2, 2, -2, 10), nrow = 3)
 A</code></pre>
@@ -462,9 +471,7 @@ A</code></pre>
 ## [1,]   13   -4    2
 ## [2,]   -4   13   -2
 ## [3,]    2   -2   10</code></pre>
-</div>
-<div id="spectral-decomposition" class="section level1">
-<h1>Spectral Decomposition</h1>
+<p>#Spectral Decomposition</p>
 <pre class="r"><code>#Get eigenvalues and eigenvectors
 e = eigen(A)
 e</code></pre>
@@ -487,7 +494,6 @@ A2</code></pre>
 ## [1,]   13   -4    2
 ## [2,]   -4   13   -2
 ## [3,]    2   -2   10</code></pre>
-</div>
 
 
 
